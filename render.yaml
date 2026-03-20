@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: support-insight
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/mode
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_API_KEYS
+        sync: false
+      - key: AI_MODE
+        value: llm
+      - key: DATABASE_URL
+        value: sqlite:///support_platform.db
