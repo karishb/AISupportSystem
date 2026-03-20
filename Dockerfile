@@ -19,6 +19,7 @@ COPY backend/ ./backend/
 COPY ai/ ./ai/
 COPY pipeline/ ./pipeline/
 COPY data/ ./data/
+COPY support_platform.db ./support_platform.db
 
 # Copy built frontend
 COPY --from=frontend-build /app/frontend/dist ./static
