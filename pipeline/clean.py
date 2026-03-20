@@ -30,12 +30,23 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
     df["timestamp"] = df["timestamp"].fillna(pd.Timestamp.now())
 
-    # Replace {product_purchased} placeholder with actual product name
+    # Replace all {placeholder} patterns in messages
+    import re
     if "product" in df.columns:
-        df["message"] = df.apply(
-            lambda r: r["message"].replace("{product_purchased}", str(r["product"])) if "{product_purchased}" in str(r["message"]) else r["message"],
-            axis=1
-        )
+        def _replace_placeholders(row):
+            msg = str(row["message"])
+            product = str(row["product"])
+            # Replace {product_purchased} and variants with actual product name
+            msg = re.sub(r'\{[Pp]roduct[_\w]*\}', product, msg)
+            # Replace other common placeholders with sensible defaults
+            msg = re.sub(r'\{error_message\}', 'an unexpected error', msg)
+            msg = re.sub(r'\{order_\w+\}', 'ORD-' + str(row.get("ticket_id", "000"))[:6], msg)
+            msg = re.sub(r'\{(?:name|Name|user)\}', 'Customer', msg)
+            msg = re.sub(r'\{(?:device_name|model|model_name)\}', product, msg)
+            # Remove any remaining {placeholder} patterns
+            msg = re.sub(r'\{[^}]+\}', '', msg)
+            return msg
+        df["message"] = df.apply(_replace_placeholders, axis=1)
 
     # Filter short messages
     df = df[df["message"].str.len() >= 10]
