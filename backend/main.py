@@ -122,7 +122,7 @@ def get_mode():
     return {
         "mode": "llm" if llm.is_available() else "free",
         "llm_provider": llm.get_provider(),
-        "embeddings": "OpenAI text-embedding-3-small" if embeddings.is_available() else "disabled",
+        "embeddings": "sentence-transformers/all-MiniLM-L6-v2" if embeddings.is_available() else "disabled",
         "vector_db": f"ChromaDB ({embeddings._collection.count()} vectors)" if embeddings._collection else "disabled",
         "categorization": "LLM" if llm.is_available() else "TF-IDF + Keywords",
         "sentiment": "LLM" if llm.is_available() else "TextBlob",

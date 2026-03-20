@@ -18,3 +18,5 @@ build/
 *.egg-info/
 frontend/.vite/
 Assignment*
+Employee*
+*.docx
