@@ -102,7 +102,7 @@ export default function Tickets() {
                 <Typography variant="caption">Product: {t.product}</Typography>
                 <Typography variant="caption">Order: ${t.order_value?.toFixed(2)}</Typography>
                 <Typography variant="caption">Status: {t.resolution_status}</Typography>
-                <Typography variant="caption">Confidence: {(t.ai_confidence || 0).toFixed(0)}%</Typography>
+                <Typography variant="caption">Confidence: {((t.ai_confidence || 0) * 100).toFixed(0)}%</Typography>
               </Stack>
             </AccordionDetails>
           </Accordion>
